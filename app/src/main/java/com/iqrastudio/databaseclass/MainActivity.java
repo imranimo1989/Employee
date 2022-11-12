@@ -51,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
                                 Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
 
-
                                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                                 startActivity(intent);
+
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(stringRequest);
-
 
 
 
