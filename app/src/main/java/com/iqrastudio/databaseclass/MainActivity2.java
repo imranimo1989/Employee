@@ -60,7 +60,18 @@ public class MainActivity2 extends AppCompatActivity {
                         String desi=  jsonObject.getString("Designation");
                         String depa=  jsonObject.getString("Department");
 
-                        textView.append(name+"\n"+desi+"\n"+depa);
+                       // textView.append(name+"\n"+desi+"\n"+depa);
+
+
+                        hashMap = new HashMap<>();
+                        hashMap.put("Employee Name", name);
+                        hashMap.put("Designation",desi );
+                        hashMap.put("Department", depa);
+                        arrayList.add(hashMap);
+
+
+                        MyAdapter myAdapter = new MyAdapter();
+                        gridView.setAdapter(myAdapter);
 
 
 
@@ -160,11 +171,11 @@ public class MainActivity2 extends AppCompatActivity {
 
             HashMap<String , String>    hashMap = arrayList.get(position);
 
-            String name = hashMap.get("Name");
-            String des = hashMap.get("Des");
-            String dep = hashMap.get("Dep");
+            String name = hashMap.get("Employee Name");
+            String des = hashMap.get("Designation");
+            String dep = hashMap.get("Department");
 
-            tvName.setText(name);
+            tvName.setText(position+" "+name);
             tvDes.setText(des);
             tvDep.setText(dep);
 
