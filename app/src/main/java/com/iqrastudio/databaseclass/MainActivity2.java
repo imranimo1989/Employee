@@ -133,6 +133,7 @@ searchView = findViewById(R.id.searchView);
 
 
             Button btDel = myView.findViewById(R.id.buttonDel);
+            Button btUpd = myView.findViewById(R.id.buttonUpdate);
 
 
             HashMap<String , String>    hashMap = arrayList.get(position);
@@ -146,6 +147,7 @@ searchView = findViewById(R.id.searchView);
 
 
 
+
             tvName.setText(position+1+": Name: "+name);
             tvDes.setText("Designation: "+des);
             tvDep.setText("Department: "+dep);
@@ -154,7 +156,12 @@ searchView = findViewById(R.id.searchView);
 
 
 
+btUpd.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
 
+    }
+});
 
 
 
@@ -261,11 +268,6 @@ searchView = findViewById(R.id.searchView);
                             @Override
                             public boolean onQueryTextSubmit(String query) {
 
-                                if(arrayList.contains(query)){
-                                    .getFilter().filter(query);
-                                }else{
-                                    Toast.makeText(MainActivity2.this, "No Match found",Toast.LENGTH_LONG).show();
-                                }
 
 
                                 return false;
