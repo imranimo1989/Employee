@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         final EditText empName = findViewById(R.id.empName);
         final EditText empDesig = findViewById(R.id.empDesig);
         final  EditText empDep =findViewById(R.id.empDep);
+        final EditText empEmail = findViewById(R.id.empEmail);
+        final  EditText empPhone =findViewById(R.id.empPhone);
 
         final CardView EnterButton = findViewById(R.id.enterButton);
 
@@ -37,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 String empN = empName.getText().toString();
                 String empD = empDesig.getText().toString();
                 String empDepart = empDep.getText().toString();
+                String empEm = empEmail.getText().toString();
+                String empPh = empPhone.getText().toString();
 
 
-                String url = "https://blazeincorporation.com/class-work/emp.php?emp_name="+empN+"&emp_desig="+empD+"&emp_dep="+empDepart;
+                String url = "https://blazeincorporation.com/class-work/Insert_emp.php?name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
 
 
                 // Request a string response from the provided URL.

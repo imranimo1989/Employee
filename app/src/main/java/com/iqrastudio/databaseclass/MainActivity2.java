@@ -1,15 +1,22 @@
 package com.iqrastudio.databaseclass;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -30,9 +38,13 @@ import java.util.HashMap;
 public class MainActivity2 extends AppCompatActivity {
 
     GridView gridView;
+    SearchView searchView;
+    ArrayAdapter<String> adapter;
 
     ArrayList<HashMap<String,String>> arrayList = new ArrayList();
     HashMap<String,String> hashMap;
+
+    ProgressBar progressBar;
 
 
 
@@ -43,64 +55,13 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         gridView = findViewById(R.id.listView);
-
+        progressBar=findViewById(R.id.progressBar);
+searchView = findViewById(R.id.searchView);
         final  TextView textView = findViewById(R.id.header_title);
 
-        String url = "https://blazeincorporation.com/class-work/emp_view.php";
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-
-                try {
-                    for (int x =0; x<response.length();x++){
-                        JSONObject jsonObject = response.getJSONObject(x);
-                      String name=  jsonObject.getString("Employee Name");
-                        String desi=  jsonObject.getString("Designation");
-                        String depa=  jsonObject.getString("Department");
-
-                       // textView.append(name+"\n"+desi+"\n"+depa);
-
-
-                        hashMap = new HashMap<>();
-                        hashMap.put("Employee Name", name);
-                        hashMap.put("Designation",desi );
-                        hashMap.put("Department", depa);
-                        arrayList.add(hashMap);
-
-
-                        MyAdapter myAdapter = new MyAdapter();
-                        gridView.setAdapter(myAdapter);
-
-
-
-
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity2.this);
-        requestQueue.add(jsonArrayRequest);
 
-
-
-
-
-
-
+        LoadEmpData();
 
 
 /*
@@ -167,24 +128,179 @@ public class MainActivity2 extends AppCompatActivity {
             TextView tvName = myView.findViewById(R.id.name);
             TextView tvDes = myView.findViewById(R.id.desig);
             TextView tvDep = myView.findViewById(R.id.dep);
+            TextView tvEmail = myView.findViewById(R.id.tvEmail);
+            TextView tvPhone = myView.findViewById(R.id.tvPhone);
+
+
+            Button btDel = myView.findViewById(R.id.buttonDel);
 
 
             HashMap<String , String>    hashMap = arrayList.get(position);
 
-            String name = hashMap.get("Employee Name");
+           String id    = hashMap.get("id");
+            String name = hashMap.get("emp_name");
             String des = hashMap.get("Designation");
             String dep = hashMap.get("Department");
+            String email= hashMap.get("emp_email");
+            String phone = hashMap.get("emp_phone");
 
-            tvName.setText(position+" "+name);
-            tvDes.setText(des);
-            tvDep.setText(dep);
+
+
+            tvName.setText(position+1+": Name: "+name);
+            tvDes.setText("Designation: "+des);
+            tvDep.setText("Department: "+dep);
+            tvEmail.setText("Email: "+email);
+            tvPhone.setText("Phone: "+phone);
+
+
+
+
+
+
+
+
+
+            btDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    String url = "https://blazeincorporation.com/class-work/del_emp.php?id="+id;
+
+
+                    // Request a string response from the provided URL.
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    // Display the first 500 characters of the response string.
+
+
+
+                                    Toast.makeText(MainActivity2.this, response, Toast.LENGTH_SHORT).show();
+
+                                    LoadEmpData();
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+
+                    RequestQueue queue = Volley.newRequestQueue(MainActivity2.this);
+                    queue.add(stringRequest);
+
+
+
+
+                }
+
+
+
+
+            });
+
+
+
+
 
             return myView;
         }
+
+        //=================================
+
+
     }
 
 
+    private void LoadEmpData() {
 
+        arrayList = new ArrayList<>();
+        String url = "https://blazeincorporation.com/class-work/emp_view.php";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                progressBar.setVisibility(View.GONE);
+
+
+                try {
+                    for (int x =0; x<response.length();x++){
+                        JSONObject jsonObject = response.getJSONObject(x);
+                        String id   = jsonObject.getString("id");
+                        String name=  jsonObject.getString("emp_name");
+                        String desi=  jsonObject.getString("Designation");
+                        String depa=  jsonObject.getString("Department");
+                        String emai=  jsonObject.getString("emp_email");
+                        String pho=  jsonObject.getString("emp_phone");
+
+                        // textView.append(name+"\n"+desi+"\n"+depa);
+
+
+                        hashMap = new HashMap<>();
+                        hashMap.put("id",id);
+                        hashMap.put("emp_name", name);
+                        hashMap.put("Designation",desi );
+                        hashMap.put("Department", depa);
+                        hashMap.put("emp_email",emai );
+                        hashMap.put("emp_phone", pho);
+                        arrayList.add(hashMap);
+
+
+                        if (arrayList.size()>0){
+                            MyAdapter myAdapter = new MyAdapter();
+                            gridView.setAdapter(myAdapter);
+
+                        }
+
+
+
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+
+                                if(arrayList.contains(query)){
+                                    .getFilter().filter(query);
+                                }else{
+                                    Toast.makeText(MainActivity2.this, "No Match found",Toast.LENGTH_LONG).show();
+                                }
+
+
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String s) {
+                                return false;
+                            }
+                        });
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                    progressBar.setVisibility(View.GONE);
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity2.this);
+        requestQueue.add(jsonArrayRequest);
+
+
+
+    }
 
 
 

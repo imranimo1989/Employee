@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity2">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+
     <TextView
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
@@ -17,8 +24,14 @@
         android:layout_gravity="center"/>
 
 
-
-
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:queryHint="Search Here"
+        android:iconifiedByDefault="false"
+        android:background="#2FC5C5C5"/>
 
     <GridView
         android:id="@+id/listView"
@@ -26,8 +39,9 @@
         android:layout_height="wrap_content"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        />
+        >
 
+    </GridView>
 
 
 </LinearLayout>
