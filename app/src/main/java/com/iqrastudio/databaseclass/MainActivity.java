@@ -6,7 +6,9 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -16,7 +18,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+
+
 public class MainActivity extends AppCompatActivity {
+
+    public CardView cardViewEnterButton;
+    public CardView cardViewUpdateButton;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,57 +38,109 @@ public class MainActivity extends AppCompatActivity {
         final EditText empEmail = findViewById(R.id.empEmail);
         final  EditText empPhone =findViewById(R.id.empPhone);
 
-        final CardView EnterButton = findViewById(R.id.enterButton);
 
 
-        EnterButton.setOnClickListener(new View.OnClickListener() {
+        cardViewEnterButton = findViewById(R.id.enterButton);
+        cardViewUpdateButton = findViewById(R.id.cardViewUpdateButton);
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Intent intent = getIntent();
+        String id= intent.getStringExtra("id");
+        String updName= intent.getStringExtra("emp_name");
+        String updDes= intent.getStringExtra("Designation");
+        String updDep= intent.getStringExtra("Department");
+        String updEmail= intent.getStringExtra("emp_email");
+        String updPho= intent.getStringExtra("emp_phone");
+
+
+
+        empName.setText(updName);
+        empDesig.setText(updDes);
+        empDep.setText(updDep);
+        empEmail.setText(updEmail);
+        empPhone.setText(updPho);
+
+
+
+        String empN = empName.getText().toString();
+        String empD = empDesig.getText().toString();
+        String empDepart = empDep.getText().toString();
+        String empEm = empEmail.getText().toString();
+        String empPh = empPhone.getText().toString();
+
+
+        String urlInsert = "https://blazeincorporation.com/class-work/Insert_emp.php?name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
+
+        String urlUpdate = "https://blazeincorporation.com/class-work/emp_update.php?id="+id+"&name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
+
+
+
+
+
+        cardViewEnterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String empN = empName.getText().toString();
-                String empD = empDesig.getText().toString();
-                String empDepart = empDep.getText().toString();
-                String empEm = empEmail.getText().toString();
-                String empPh = empPhone.getText().toString();
+
+                DataLoad(urlInsert);
 
 
-                String url = "https://blazeincorporation.com/class-work/Insert_emp.php?name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
+            }
+        });
+        //=====================================================
 
 
-                // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-
-                                Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                                startActivity(intent);
+        cardViewEnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                queue.add(stringRequest);
-
-
-
-
-
-
+                DataLoad(urlUpdate);
 
 
             }
         });
 
+
+    }
+
+    private  void DataLoad(String url){
+
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+
+                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                        startActivity(intent);
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(stringRequest);
 
     }
 }

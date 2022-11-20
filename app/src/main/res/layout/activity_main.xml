@@ -197,6 +197,7 @@
         >
 
         <TextView
+            android:id="@+id/tvEnterUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -207,6 +208,32 @@
 
 
     </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
+            android:id="@+id/cardViewUpdateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:cardElevation="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+
+
+            >
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20dp"
+                android:text="Update Info"
+                android:padding="20dp"
+                />
+
+
+        </com.google.android.material.card.MaterialCardView>
 
 
 

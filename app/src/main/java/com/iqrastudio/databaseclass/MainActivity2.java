@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -160,6 +161,25 @@ btUpd.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
 
+
+Intent intent = new Intent(MainActivity2.this,MainActivity.class);
+intent.putExtra("id",id);
+        intent.putExtra("emp_name",name);
+        intent.putExtra("Designation",des);
+        intent.putExtra("Department",dep);
+        intent.putExtra("emp_email",email);
+        intent.putExtra("emp_phone",phone);
+
+
+        MainActivity mainActivity = new MainActivity();
+        mainActivity.cardViewUpdateButton.setVisibility(View.VISIBLE);
+        mainActivity.cardViewEnterButton.setVisibility(View.GONE);
+
+        startActivity(intent);
+
+
+
+
     }
 });
 
@@ -171,33 +191,54 @@ btUpd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-
-                    String url = "https://blazeincorporation.com/class-work/del_emp.php?id="+id;
-
-
-                    // Request a string response from the provided URL.
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                            new Response.Listener<String>() {
+                    new AlertDialog.Builder(MainActivity2.this)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onResponse(String response) {
-                                    // Display the first 500 characters of the response string.
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    //===============================================
+                                    String url = "https://blazeincorporation.com/class-work/del_emp.php?id="+id;
+
+
+                                    // Request a string response from the provided URL.
+                                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    // Display the first 500 characters of the response string.
 
 
 
-                                    Toast.makeText(MainActivity2.this, response, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(MainActivity2.this, response, Toast.LENGTH_SHORT).show();
 
-                                    LoadEmpData();
+                                                    LoadEmpData();
+
+                                                }
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+
+                                        }
+                                    });
+
+                                    RequestQueue queue = Volley.newRequestQueue(MainActivity2.this);
+                                    queue.add(stringRequest);
+                                    //===============================================
 
                                 }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                            })
+                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setTitle("Delete")
+                            .setMessage("Are you sure want to Delete?")
+                            .show();
 
-                        }
-                    });
 
-                    RequestQueue queue = Volley.newRequestQueue(MainActivity2.this);
-                    queue.add(stringRequest);
+
 
 
 
