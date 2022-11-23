@@ -170,10 +170,9 @@ intent.putExtra("id",id);
         intent.putExtra("emp_email",email);
         intent.putExtra("emp_phone",phone);
 
-
-        MainActivity mainActivity = new MainActivity();
-        mainActivity.cardViewUpdateButton.setVisibility(View.VISIBLE);
-        mainActivity.cardViewEnterButton.setVisibility(View.GONE);
+        Bundle bundle = new Bundle();
+        bundle.putInt("VAL", 1);
+        intent.putExtras(bundle);
 
         startActivity(intent);
 

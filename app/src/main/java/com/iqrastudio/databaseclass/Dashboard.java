@@ -25,7 +25,11 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            Intent intent = new Intent(Dashboard.this,MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("VAL", 0);
+                intent.putExtras(bundle);
+                startActivity(intent);
 
             }
         });

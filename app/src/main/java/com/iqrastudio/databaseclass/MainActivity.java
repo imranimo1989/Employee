@@ -63,6 +63,20 @@ public class MainActivity extends AppCompatActivity {
         String updEmail= intent.getStringExtra("emp_email");
         String updPho= intent.getStringExtra("emp_phone");
 
+        Bundle bun=getIntent().getExtras();
+        int val =0;
+        val =bun.getInt("VAL");
+
+        if (val==1){
+            cardViewUpdateButton.setVisibility(View.VISIBLE);
+            cardViewEnterButton.setVisibility(View.GONE);
+        }
+        else {
+            cardViewEnterButton.setVisibility(View.VISIBLE);
+            cardViewUpdateButton.setVisibility(View.GONE);
+        }
+
+
 
 
         empName.setText(updName);
@@ -80,18 +94,13 @@ public class MainActivity extends AppCompatActivity {
         String empPh = empPhone.getText().toString();
 
 
-        String urlInsert = "https://blazeincorporation.com/class-work/Insert_emp.php?name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
-
-        String urlUpdate = "https://blazeincorporation.com/class-work/emp_update.php?id="+id+"&name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
-
-
-
 
 
         cardViewEnterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                String urlInsert = "https://blazeincorporation.com/class-work/Insert_emp.php?name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
 
                 DataLoad(urlInsert);
 
@@ -101,9 +110,14 @@ public class MainActivity extends AppCompatActivity {
         //=====================================================
 
 
-        cardViewEnterButton.setOnClickListener(new View.OnClickListener() {
+        cardViewUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                String urlUpdate = "https://blazeincorporation.com/class-work/emp_update.php?id="+id+"&name="+empN+"&desig="+empD+"&dep="+empDepart+"&email="+empEm+"&phone="+empPh;
+
+
 
 
                 DataLoad(urlUpdate);
